@@ -9,8 +9,10 @@ public class RifleSpawner : MonoBehaviour
     [SerializeField] private float rifleSpawnPositionY = 2f;
     [SerializeField] private float spawnDistanceAhead = 20f;
     [SerializeField] private float spawnRangeZ = 5f;
-    [SerializeField] private GameObject riflePrefab;
+    // [SerializeField] private GameObject riflePrefab;
     [SerializeField] private float spawnTime;
+    
+    [SerializeField] private RiflePool riflePool;
 
     private List<RifleController> spawnedRifles = new List<RifleController>();
 
@@ -32,11 +34,13 @@ public class RifleSpawner : MonoBehaviour
 
             Vector3 spawnPosition = new Vector3(spawnX, rifleSpawnPositionY, spawnZ);
 
-            GameObject rifle = Instantiate(riflePrefab, spawnPosition, Quaternion.Euler(0, 180, 0));
-            rifle.transform.SetParent(transform);
+            // GameObject rifle = Instantiate(riflePrefab, spawnPosition, Quaternion.Euler(0, 180, 0));
+            RifleController rifle = riflePool.Get();
+            rifle.transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0, 180, 0));
+            // rifle.transform.SetParent(transform);
 
-            RifleController rifleScript = rifle.GetComponent<RifleController>();
-            spawnedRifles.Add(rifleScript);
+            // RifleController rifleScript = rifle.GetComponent<RifleController>();
+            spawnedRifles.Add(rifle);
 
             yield return new WaitForSeconds(spawnTime);
         }
@@ -44,12 +48,23 @@ public class RifleSpawner : MonoBehaviour
 
     public void DestroyAllRifles(RifleController excludeRifle)
     {
-        foreach (RifleController rifle in spawnedRifles)
+        // foreach (RifleController rifle in spawnedRifles)
+        // {
+        //     if (rifle != null && rifle != excludeRifle)
+        //     {
+        //         Destroy(rifle.gameObject);
+        //
+        //     }
+        // }
+        
+        for (int i = spawnedRifles.Count - 1; i >= 0; i--)
         {
+            RifleController rifle = spawnedRifles[i];
+
             if (rifle != null && rifle != excludeRifle)
             {
-                Destroy(rifle.gameObject);
-
+                riflePool.Release(rifle);
+                spawnedRifles.RemoveAt(i);
             }
         }
 

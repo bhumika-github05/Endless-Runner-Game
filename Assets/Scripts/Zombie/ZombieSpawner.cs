@@ -8,8 +8,10 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private int[] zombieSpawnPositionX = new int[3];
     [SerializeField] private float spawnDistanceAhead = 20f;
     [SerializeField] private float spawnRangeZ = 5f;
-    [SerializeField] private GameObject zombiePrefab;
+    // [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private float spawnTime;
+    
+    [SerializeField] private ZombiePool zombiePool;
 
     private List<ZombieController> spawnedZombies = new List<ZombieController>();
     private void Start()
@@ -28,11 +30,13 @@ public class ZombieSpawner : MonoBehaviour
             float spawnZ = player.transform.position.z + spawnDistanceAhead + randomZ;
 
             Vector3 spawnPosition = new Vector3(zombieSpawnPositionX[randomXIndex], 0, spawnZ);
-            GameObject zombie = Instantiate(zombiePrefab, spawnPosition, Quaternion.Euler(0, 180, 0));
-            zombie.transform.SetParent(transform);
+            // GameObject zombie = Instantiate(zombiePrefab, spawnPosition, Quaternion.Euler(0, 180, 0));
+            ZombieController zombie = zombiePool.Get();
+            zombie.transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0, 180, 0));
+            // zombie.transform.SetParent(transform);
 
-            ZombieController zombieScript = zombie.GetComponent<ZombieController>();
-            spawnedZombies.Add(zombieScript);
+            // ZombieController zombieScript = zombie.GetComponent<ZombieController>();
+            spawnedZombies.Add(zombie);
 
             yield return new WaitForSeconds(spawnTime);
         }
@@ -40,17 +44,30 @@ public class ZombieSpawner : MonoBehaviour
 
     public void DestroyOtherZombies(ZombieController excludeZombie)
     {
-        foreach (ZombieController zombie in spawnedZombies)
+        // foreach (ZombieController zombie in spawnedZombies)
+        // {
+        //     if (zombie != null && zombie != excludeZombie)
+        //     {
+        //         // Destroy(zombie.gameObject);
+        //         spawnedZombies.Remove(zombie);
+        //         zombiePool.Release(zombie);
+        //     }
+        // }
+        
+        for (int i = spawnedZombies.Count - 1; i >= 0; i--)
         {
+            ZombieController zombie = spawnedZombies[i];
+
             if (zombie != null && zombie != excludeZombie)
             {
-                Destroy(zombie.gameObject);
+                zombiePool.Release(zombie);
+                spawnedZombies.RemoveAt(i);
             }
         }
 
-        spawnedZombies.Clear();
 
-        spawnedZombies.Add(excludeZombie);
+        // spawnedZombies.Clear();
+        // spawnedZombies.Add(excludeZombie);
     }
 
 }
