@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Vector3 offset;
     [SerializeField] private float smoothSpeed = 0.25f;
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         if (playerTransform != null)
         {

@@ -37,6 +37,7 @@ public class RifleSpawner : MonoBehaviour
             // GameObject rifle = Instantiate(riflePrefab, spawnPosition, Quaternion.Euler(0, 180, 0));
             RifleController rifle = riflePool.Get();
             rifle.transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0, 180, 0));
+            rifle.AssignSpawner(this);
             // rifle.transform.SetParent(transform);
 
             // RifleController rifleScript = rifle.GetComponent<RifleController>();
@@ -63,11 +64,14 @@ public class RifleSpawner : MonoBehaviour
 
             if (rifle != null && rifle != excludeRifle)
             {
-                riflePool.Release(rifle);
-                spawnedRifles.RemoveAt(i);
+                ReturnRifleToPool(rifle);
             }
         }
+    }
 
-        spawnedRifles.Clear();
+    public void ReturnRifleToPool(RifleController rifle)
+    {
+        riflePool.Release(rifle);
+        spawnedRifles.Remove(rifle);;
     }
 }
