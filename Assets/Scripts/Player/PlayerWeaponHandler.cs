@@ -10,6 +10,7 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     private const string IS_SHOOTING = "IsShooting";
 
+    
     public void AssignRifle(RifleController rifle)
     {
         currentRifle = rifle;
@@ -23,8 +24,10 @@ public class PlayerWeaponHandler : MonoBehaviour
         if (currentRifle == null) return;
 
         isHoldingRifle = false;
-        currentRifle = null;
         animator.SetBool(IS_SHOOTING, false);
+        currentRifle.ReturnRifleToPool();
+        currentRifle = null;
+        
     }
 
     public void Shoot()

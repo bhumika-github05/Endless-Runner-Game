@@ -49,14 +49,6 @@ public class RifleSpawner : MonoBehaviour
 
     public void DestroyAllRifles(RifleController excludeRifle)
     {
-        // foreach (RifleController rifle in spawnedRifles)
-        // {
-        //     if (rifle != null && rifle != excludeRifle)
-        //     {
-        //         Destroy(rifle.gameObject);
-        //
-        //     }
-        // }
         
         for (int i = spawnedRifles.Count - 1; i >= 0; i--)
         {
@@ -72,6 +64,6 @@ public class RifleSpawner : MonoBehaviour
     public void ReturnRifleToPool(RifleController rifle)
     {
         riflePool.Release(rifle);
-        spawnedRifles.Remove(rifle);;
+        spawnedRifles.Remove(rifle);
     }
 }

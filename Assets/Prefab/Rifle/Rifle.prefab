@@ -178,14 +178,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 90
-  bulletPrefab: {fileID: 8868652346333914054, guid: 5065c01ed38d5774b88d1dcacefdbd76, type: 3}
   shootPoint: {fileID: 8931881607322147733}
-  anim: {fileID: 3636098284577243018}
-  riflePrefab: {fileID: 2487099614441165436}
-  rifleInHandDestructionTime: 10
+  rifleInHandDestructionTime: 3
   laserBeamPrefab: {fileID: 4473118888217136575, guid: e21f835deeb8bc44fbd291a446c71db8, type: 3}
   laserBeamDuration: 0.1
   laserBeamDistance: 100
+  riflePrefab: {fileID: 2487099614441165436}
 --- !u!1 &8599165341420150126
 GameObject:
   m_ObjectHideFlags: 0

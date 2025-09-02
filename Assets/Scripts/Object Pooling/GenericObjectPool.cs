@@ -55,6 +55,7 @@ public class GenericObjectPool<T> : MonoBehaviour where T : Component
     public virtual void Release(T obj)
     {
         obj.gameObject.SetActive(false);
+        obj.transform.SetParent(parent);
         objects.Enqueue(obj);
     }
 

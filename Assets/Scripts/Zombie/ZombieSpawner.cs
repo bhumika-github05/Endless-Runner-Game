@@ -44,15 +44,6 @@ public class ZombieSpawner : MonoBehaviour
 
     public void DestroyOtherZombies(ZombieController excludeZombie)
     {
-        // foreach (ZombieController zombie in spawnedZombies)
-        // {
-        //     if (zombie != null && zombie != excludeZombie)
-        //     {
-        //         // Destroy(zombie.gameObject);
-        //         spawnedZombies.Remove(zombie);
-        //         zombiePool.Release(zombie);
-        //     }
-        // }
         
         for (int i = spawnedZombies.Count - 1; i >= 0; i--)
         {
@@ -64,10 +55,7 @@ public class ZombieSpawner : MonoBehaviour
                 spawnedZombies.RemoveAt(i);
             }
         }
-
-
-        // spawnedZombies.Clear();
-        // spawnedZombies.Add(excludeZombie);
+        
     }
 
 }

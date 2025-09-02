@@ -119,7 +119,6 @@ public class RifleController : MonoBehaviour
     [Header("Rifle Pickup Settings")]
     [SerializeField] private GameObject riflePrefab;
 
-    [SerializeField] private int rifleLifeTime;
     
     private RifleSpawner rifleSpawner;
     
@@ -175,8 +174,8 @@ public class RifleController : MonoBehaviour
             SpawnLaser(shootPoint.position, hit.point);
 
             if (!hit.collider.CompareTag("Zombie")) return;
-            ZombieController zombie = hit.collider.GetComponent<ZombieController>();
-            if (zombie != null)
+            
+            if (hit.collider.TryGetComponent<ZombieController>(out ZombieController zombie))
             {
                 zombie.ZombieDeath();
             }
@@ -200,29 +199,23 @@ public class RifleController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        PlayerWeaponHandler weaponHandler = other.GetComponent<PlayerWeaponHandler>();
-        if (weaponHandler == null) return;
+       
+        if (!other.TryGetComponent(out PlayerWeaponHandler weaponHandler))
+            return;
 
         Transform rifleParent = weaponHandler.GetRifleParent();
 
         if (rifleParent.childCount != 0) return;
-        // Destroy(gameObject); // remove pickup objects
 
-        // GameObject rifle = Instantiate(riflePrefab, rifleParent.position, rifleParent.rotation, rifleParent);
         transform.SetParent(rifleParent);
-        // rifle.transform.localPosition = Vector3.zero;
-        // rifle.transform.localRotation = Quaternion.identity;
         transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
-        // RifleController rifleScript = rifle.GetComponent<RifleController>();
         weaponHandler.AssignRifle(this);
         allowRotation  = false;
-        Invoke(nameof(ReturnRifleToPool), rifleLifeTime);
-        // Destroy(this, rifleInHandDestructionTime);
         
     }
 
     public void AssignSpawner(RifleSpawner spawner) => rifleSpawner = spawner;
 
-    void ReturnRifleToPool() => rifleSpawner.ReturnRifleToPool(this);
+    public void ReturnRifleToPool() => rifleSpawner.ReturnRifleToPool(this);
 }
