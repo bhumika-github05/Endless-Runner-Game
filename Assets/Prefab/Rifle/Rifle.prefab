@@ -179,7 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 90
   shootPoint: {fileID: 8931881607322147733}
-  rifleInHandDestructionTime: 3
+  rifleInHandDestructionTime: 10
   laserBeamPrefab: {fileID: 4473118888217136575, guid: e21f835deeb8bc44fbd291a446c71db8, type: 3}
   laserBeamDuration: 0.1
   laserBeamDistance: 100

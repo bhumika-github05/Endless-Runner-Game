@@ -12,7 +12,7 @@ public class ZombieController : MonoBehaviour
     private const string ZOMBIE_DIE = "Zombie_Die";
     private const string ZOMBIE_IDLE = "Zombie_Idle";
 
-    public event Action zombieDeath;
+    public static event Action OnZombieDeath;
     private Transform cameraTransform;
 
     private void Start()
@@ -71,7 +71,7 @@ public class ZombieController : MonoBehaviour
 
     public void ZombieDeath()
     {
-        zombieDeath?.Invoke();
+        OnZombieDeath?.Invoke();
         rb.linearVelocity = Vector3.zero;
         //anim.SetTrigger(ZOMBIE_DIE);
         explosion.Play();

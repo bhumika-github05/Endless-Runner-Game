@@ -21,6 +21,7 @@ public class KeyboardMouseInputHandler : IInputHandler
         HandleKeyboard();
         HandleSwipe();
     }
+    
 
     private void HandleKeyboard()
     {

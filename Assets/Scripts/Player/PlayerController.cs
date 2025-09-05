@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour
     {
         uiManager.ShowGameOver(); // ✅ delegate UI to UI manager
     }
+    
+    
 }
 
 
