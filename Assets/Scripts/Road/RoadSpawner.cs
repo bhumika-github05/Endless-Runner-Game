@@ -4,10 +4,11 @@ using UnityEngine;
 public class RoadSpawner : MonoBehaviour
 {
     private float roadSpawnZ;
+    private Queue<Road> activeRoads = new Queue<Road>();
+    
     [SerializeField] private float roadSpawnX = -3.3f;
 
-    private Queue<Road> activeRoads = new Queue<Road>();
-    [SerializeField] private RoadPool roadPool;   // drag your RoadPool MonoBehaviour here
+    [SerializeField] private RoadPool roadPool;   
 
     [SerializeField] private int firstRoadSpawnPosition = 40;
     [SerializeField] private int roadsOnScreen = 10;

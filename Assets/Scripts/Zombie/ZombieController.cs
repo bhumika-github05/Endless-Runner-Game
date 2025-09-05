@@ -3,16 +3,18 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
+    public static event Action OnZombieDeath;
+    
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator anim;
     [SerializeField] private ParticleSystem explosion;
-    private int zombieHealth = 5;
-
+    
+    private ZombiePool zombiePool; 
+    
     private const string ZOMBIE_DIE = "Zombie_Die";
     private const string ZOMBIE_IDLE = "Zombie_Idle";
 
-    public static event Action OnZombieDeath;
     private Transform cameraTransform;
 
     private void Start()
@@ -20,6 +22,7 @@ public class ZombieController : MonoBehaviour
         cameraTransform = Camera.main.transform;
     }
 
+   
     private void Update()
     {
         ScanZombiePosition();
@@ -44,24 +47,19 @@ public class ZombieController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
-            //zombieHealth--;
-
-            //if (zombieHealth < 0)
-            //{
-            //    ZombieDeath();
-            //}
             ZombieDeath();
         }
 
     }
+
+    
     private void OnCollisionEnter(Collision other)
     {
-
         if (other.gameObject.CompareTag("Player"))
         {
             anim.SetBool(ZOMBIE_IDLE, true);
             rb.linearVelocity = Vector3.zero;
-            PlayerController player = other.gameObject.GetComponent<PlayerController>();
+            other.gameObject.TryGetComponent(out PlayerController player);
             player.Die();
 
             transform.parent.GetComponent<ZombieSpawner>().DestroyOtherZombies(this);
@@ -73,9 +71,16 @@ public class ZombieController : MonoBehaviour
     {
         OnZombieDeath?.Invoke();
         rb.linearVelocity = Vector3.zero;
-        //anim.SetTrigger(ZOMBIE_DIE);
         explosion.Play();
         gameObject.GetComponent<Collider>().enabled = false;
         Destroy(gameObject, 0.5f);
+    }
+
+    private void ReturnToPool()
+    {
+        if (zombiePool != null)
+        {
+            zombiePool.Release(this);
+        }
     }
 }

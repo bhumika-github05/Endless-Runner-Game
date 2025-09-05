@@ -1,8 +1,23 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private GameObject gameOverScreen;
 
@@ -20,7 +35,7 @@ public class UIManager : MonoBehaviour
 
     private void IncreaseScore()
     {
-        score += 1; // ✅ add 10 per zombie
+        score += 1;
         if (scoreText != null)
             scoreText.text = "Score: " + score;
     }
@@ -33,13 +48,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void HideGameOver()
-    {
-        if (gameOverScreen != null)
-        {
-            gameOverScreen.SetActive(false);
-        }
-    }
-
+    
 }
     

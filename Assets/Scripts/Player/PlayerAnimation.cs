@@ -19,5 +19,6 @@ public class PlayerAnimation : IAnimationHandler
     public void TriggerJump() => anim.SetTrigger(JUMP);
     public void TriggerRoll() => anim.SetTrigger(ROLL);
     public void TriggerDie() => anim.SetTrigger(DIE);
+ 
     public void SetShooting(bool value) => anim.SetBool(IS_SHOOTING, value);
 }

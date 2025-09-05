@@ -8,12 +8,12 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private int[] zombieSpawnPositionX = new int[3];
     [SerializeField] private float spawnDistanceAhead = 20f;
     [SerializeField] private float spawnRangeZ = 5f;
-    // [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private float spawnTime;
     
     [SerializeField] private ZombiePool zombiePool;
 
     private List<ZombieController> spawnedZombies = new List<ZombieController>();
+    
     private void Start()
     {
         StartCoroutine(SpawnZombie());
@@ -21,7 +21,6 @@ public class ZombieSpawner : MonoBehaviour
 
     IEnumerator SpawnZombie()
     {
-
         while (!player.isDead)
         {
             int randomXIndex = Random.Range(0, zombieSpawnPositionX.Length);
@@ -30,12 +29,8 @@ public class ZombieSpawner : MonoBehaviour
             float spawnZ = player.transform.position.z + spawnDistanceAhead + randomZ;
 
             Vector3 spawnPosition = new Vector3(zombieSpawnPositionX[randomXIndex], 0, spawnZ);
-            // GameObject zombie = Instantiate(zombiePrefab, spawnPosition, Quaternion.Euler(0, 180, 0));
             ZombieController zombie = zombiePool.Get();
             zombie.transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0, 180, 0));
-            // zombie.transform.SetParent(transform);
-
-            // ZombieController zombieScript = zombie.GetComponent<ZombieController>();
             spawnedZombies.Add(zombie);
 
             yield return new WaitForSeconds(spawnTime);
@@ -44,7 +39,6 @@ public class ZombieSpawner : MonoBehaviour
 
     public void DestroyOtherZombies(ZombieController excludeZombie)
     {
-        
         for (int i = spawnedZombies.Count - 1; i >= 0; i--)
         {
             ZombieController zombie = spawnedZombies[i];

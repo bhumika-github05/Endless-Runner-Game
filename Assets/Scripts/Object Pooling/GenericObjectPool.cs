@@ -4,9 +4,9 @@ using UnityEngine;
 public class GenericObjectPool<T> : MonoBehaviour where T : Component
 {
     [Header("Pooling Settings")]
-    [SerializeField] private T prefab;              // assign prefab in Inspector
+    [SerializeField] private T prefab;            
     [SerializeField] private int initialSize = 10;
-    [SerializeField] private Transform parent;      // optional parent for instances
+    [SerializeField] private Transform parent;      
 
     private readonly Queue<T> objects = new Queue<T>();
 
@@ -21,7 +21,6 @@ public class GenericObjectPool<T> : MonoBehaviour where T : Component
         if (parent == null)
             parent = transform;
 
-        // Pre-instantiate
         for (int i = 0; i < initialSize; i++)
         {
             AddObjectToPool();
@@ -36,9 +35,6 @@ public class GenericObjectPool<T> : MonoBehaviour where T : Component
         return newObj;
     }
 
-    /// <summary>
-    /// Get an object from the pool.
-    /// </summary>
     public virtual T Get()
     {
         if (objects.Count == 0)
@@ -49,9 +45,6 @@ public class GenericObjectPool<T> : MonoBehaviour where T : Component
         return obj;
     }
 
-    /// <summary>
-    /// Return an object back to the pool.
-    /// </summary>
     public virtual void Release(T obj)
     {
         obj.gameObject.SetActive(false);
@@ -59,16 +52,5 @@ public class GenericObjectPool<T> : MonoBehaviour where T : Component
         objects.Enqueue(obj);
     }
 
-    /// <summary>
-    /// Destroy all objects in pool (useful on hard reset).
-    /// </summary>
-    public void Clear()
-    {
-        foreach (var obj in objects)
-        {
-            if (obj != null)
-                Destroy(obj.gameObject);
-        }
-        objects.Clear();
-    }
+    
 }

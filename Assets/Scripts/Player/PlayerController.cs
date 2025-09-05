@@ -16,10 +16,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
     [SerializeField] private float[] laneXPositions = new float[3];
-
-    [Header("Managers")]
-    [SerializeField] private UIManager uiManager; // ✅ reference UI manager
-
+    
+    // [Header("Managers")]
+    // [SerializeField] private UIManager uiManager; 
+    
     private Rigidbody rb;
     private IAnimationHandler animHandler;
     private IMovementHandler movementHandler;
@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
 
         weaponHandler = GetComponent<PlayerWeaponHandler>();
 
-        // Assign Keyboard+Mouse input handler
         inputHandler = new KeyboardMouseInputHandler(movementHandler, weaponHandler);
     }
 
@@ -64,14 +63,13 @@ public class PlayerController : MonoBehaviour
         Invoke(nameof(TriggerGameOver), 1);
         animHandler.TriggerDie();
         isDead = true;
-        rb.linearVelocity = Vector3.zero;
         rb.isKinematic = true;
         enabled = false;
     }
 
     private void TriggerGameOver()
     {
-        uiManager.ShowGameOver(); // ✅ delegate UI to UI manager
+        UIManager.Instance.ShowGameOver();
     }
     
     

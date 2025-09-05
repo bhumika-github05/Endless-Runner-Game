@@ -9,7 +9,6 @@ public class RifleSpawner : MonoBehaviour
     [SerializeField] private float rifleSpawnPositionY = 2f;
     [SerializeField] private float spawnDistanceAhead = 20f;
     [SerializeField] private float spawnRangeZ = 5f;
-    // [SerializeField] private GameObject riflePrefab;
     [SerializeField] private float spawnTime;
     
     [SerializeField] private RiflePool riflePool;
@@ -34,13 +33,10 @@ public class RifleSpawner : MonoBehaviour
 
             Vector3 spawnPosition = new Vector3(spawnX, rifleSpawnPositionY, spawnZ);
 
-            // GameObject rifle = Instantiate(riflePrefab, spawnPosition, Quaternion.Euler(0, 180, 0));
             RifleController rifle = riflePool.Get();
             rifle.transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0, 180, 0));
             rifle.AssignSpawner(this);
-            // rifle.transform.SetParent(transform);
 
-            // RifleController rifleScript = rifle.GetComponent<RifleController>();
             spawnedRifles.Add(rifle);
 
             yield return new WaitForSeconds(spawnTime);
